@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODE EXECUTION — Latest AI Advancements</title>
+<meta name="description" content="CODE EXECUTION — A curated tracker of the latest AI models, applications, and trustworthy research.">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   CODE EXECUTION
+   Aesthetic: Alien (1979) computer terminal + modern feel
+   Palette: phosphor green, amber accent, deep black, scanline overlay
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #000900;
+  --bg-panel: #0a0f0a;
+  --bg-panel-hover: #0d180d;
+  --phosphor: #00ff41;
+  --phosphor-dim: #00cc33;
+  --phosphor-glow: rgba(0,255,65,0.6);
+  --phosphor-faint: rgba(0,255,65,0.12);
+  --amber: #ff9500;
+  --amber-dim: #cc7700;
+  --amber-glow: rgba(255,149,0,0.4);
+  --white: #e0e0e0;
+  --gray: #555;
+  --border: #1a2a1a;
+  --border-bright: #2a4a2a;
+  --font-mono: "Courier New", "Lucida Console", "Consolas", monospace;
+  --font-display: "Courier New", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--phosphor);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scanline overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,65,0.015) 2px,
+    rgba(0,255,65,0.015) 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Flicker vignette ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── Header ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-bright);
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+  box-shadow: 0 0 20px rgba(0,255,65,0.05);
+}
+
+header .brand {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  font-weight: bold;
+  color: var(--phosphor);
+  text-shadow: 0 0 6px var(--phosphor-glow);
+}
+
+header .brand .cursor {
+  animation: blink 1s step-end infinite;
+}
+
+header nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+header nav a {
+  color: var(--phosphor-dim);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+header nav a:hover {
+  color: var(--phosphor);
+  text-shadow: 0 0 4px var(--phosphor-glow);
+}
+
+/* ── Main layout ── */
+main {
+  margin-top: 3.2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ── Hero / Boot screen ── */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.hero .boot-line {
+  font-size: 0.85rem;
+  color: var(--phosphor-dim);
+  opacity: 0;
+  margin: 0.15rem 0;
+  white-space: pre;
+}
+
+.hero .boot-line.shown {
+  animation: typeIn 0.3s forwards;
+}
+
+.hero .title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 5rem);
+  letter-spacing: 0.08em;
+  color: var(--phosphor);
+  text-shadow: 0 0 20px var(--phosphor-glow), 0 0 40px rgba(0,255,65,0.2);
+  margin: 2rem 0 1rem;
+  font-weight: bold;
+}
+
+.hero .subtitle {
+  color: var(--amber);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px var(--amber-glow);
+  margin-bottom: 2rem;
+}
+
+.hero .enter-btn {
+  display: inline-block;
+  padding: 0.8rem 2.5rem;
+  border: 1px solid var(--phosphor);
+  color: var(--phosphor);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: 0 0 6px var(--phosphor-glow);
+  opacity: 0;
+}
+
+.hero .enter-btn.shown {
+  animation: fadeIn 0.5s forwards;
+}
+
+.hero .enter-btn:hover {
+  background: var(--phosphor);
+  color: var(--bg);
+  box-shadow: 0 0 30px var(--phosphor-glow);
+  text-shadow: none;
+}
+
+/* ── Section headers ── */
+.section-header {
+  margin: 4rem 0 2rem;
+  border-bottom: 1px solid var(--border-bright);
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.section-header .prompt {
+  color: var(--amber);
+  font-weight: bold;
+  text-shadow: 0 0 6px var(--amber-glow);
+}
+
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--phosphor);
+  text-shadow: 0 0 8px var(--phosphor-glow);
+}
+
+.section-header .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-bright), transparent);
+}
+
+/* ── Card grid ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  border-color: var(--phosphor-dim);
+  background: var(--bg-panel-hover);
+  box-shadow: 0 0 20px rgba(0,255,65,0.08);
+}
+
+/* ── Card splash image ── */
+.card-image {
+  width: 100%;
+  height: 180px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card-image svg {
+  width: 100%;
+  height: 100%;
+}
+
+.card-image .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.8rem;
+  color: var(--phosphor);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.card-image:hover .overlay {
+  opacity: 1;
+}
+
+.card-image .tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,255,65,0.15);
+  border: 1px solid var(--phosphor-dim);
+  color: var(--phosphor);
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.card-image .tag.amber {
+  background: rgba(255,149,0,0.15);
+  border-color: var(--amber-dim);
+  color: var(--amber);
+}
+
+/* ── Card body ── */
+.card-body {
+  padding: 1rem 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body .meta {
+  font-size: 0.72rem;
+  color: var(--gray);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.card-body h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--phosphor);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 4px rgba(0,255,65,0.2);
+  letter-spacing: 0.02em;
+}
+
+.card-body p {
+  font-size: 0.8rem;
+  color: #88aa88;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+  flex: 1;
+}
+
+.card-body .source-link {
+  font-size: 0.72rem;
+  color: var(--amber);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.6rem;
+  margin-top: auto;
+}
+
+.card-body .source-link:hover {
+  color: var(--phosphor);
+  text-shadow: 0 0 4px var(--phosphor-glow);
+}
+
+.card-body .source-link .arrow {
+  transition: transform 0.2s;
+}
+
+.card-body .source-link:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* ── Article list ── */
+.article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.article-item {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.article-item:hover {
+  border-color: var(--phosphor-dim);
+  background: var(--bg-panel-hover);
+  box-shadow: 0 0 15px rgba(0,255,65,0.06);
+}
+
+.article-item .icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--phosphor-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--phosphor);
+  border-radius: 2px;
+}
+
+.article-item .content {
+  flex: 1;
+}
+
+.article-item .content .meta {
+  font-size: 0.7rem;
+  color: var(--gray);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.article-item .content h4 {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--phosphor);
+  margin-bottom: 0.3rem;
+}
+
+.article-item .content p {
+  font-size: 0.78rem;
+  color: #779977;
+  line-height: 1.4;
+}
+
+.article-item .source {
+  font-size: 0.7rem;
+  color: var(--amber);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border-bright);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--gray);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+footer a {
+  color: var(--phosphor-dim);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--phosphor);
+}
+
+/* ── Terminal prompt before sections ── */
+.terminal-line {
+  font-size: 0.8rem;
+  color: var(--phosphor-dim);
+  margin: 1rem 0 0.5rem;
+  opacity: 0.6;
+}
+
+.terminal-line .prompt {
+  color: var(--amber);
+}
+
+/* ── Boot animation ── */
+@keyframes typeIn {
+  from { opacity: 0; transform: translateX(-5px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@keyframes scanlineMove {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--phosphor-dim); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  header nav { gap: 0.8rem; }
+  header nav a { font-size: 0.7rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .hero .title { letter-spacing: 0.04em; }
+  main { padding: 1rem 1rem 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header>
+  <div class="brand">CODE EXECUTION<span class="cursor">█</span></div>
+  <nav>
+    <a href="#models">Models</a>
+    <a href="#applications">Applications</a>
+    <a href="#articles">Articles</a>
+    <a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ═══════════════ HERO / BOOT ═══════════════ -->
+  <section class="hero" id="top">
+    <div id="boot-sequence"></div>
+    <h1 class="title">CODE EXECUTION</h1>
+    <div class="subtitle">Latest AI Models · Applications · Research</div>
+    <a href="#models" class="enter-btn" id="enterBtn">▸ ENTER TERMINAL</a>
+  </section>
+
+  <!-- ═══════════════ MODELS ═══════════════ -->
+  <section id="models">
+    <div class="section-header">
+      <span class="prompt">root@ncc-1701:~$</span>
+      <h2>AI Models</h2>
+      <div class="line"></div>
+    </div>
+    <div class="terminal-line"><span class="prompt">▸</span> Listing latest AI model releases — sorted by date</div>
+
+    <div class="card-grid">
+
+      <!-- Claude Opus 4.8 -->
+      <div class="card">
+        <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Anthropic</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid1" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid1)"/>
+              <text x="170" y="60" text-anchor="middle" font-family="Courier New" font-size="11" fill="#00ff41" opacity="0.3">CLAUDE_OPUS_4.8</text>
+              <text x="170" y="78" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00cc33" opacity="0.5">ANTHROPIC</text>
+              <text x="170" y="110" text-anchor="middle" font-family="Courier New" font-size="22" fill="#00ff41" opacity="0.8" font-weight="bold">OPUS 4.8</text>
+              <text x="170" y="130" text-anchor="middle" font-family="Courier New" font-size="8" fill="#ff9500" opacity="0.6">MAY 2026</text>
+              <text x="170" y="150" text-anchor="middle" font-family="Courier New" font-size="7" fill="#00cc33" opacity="0.4">CODING · AGENTIC · REASONING</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Anthropic · May 28, 2026</div>
+          <h3>Claude Opus 4.8</h3>
+          <p>Anthropic's most capable model — upgraded with stronger coding, agentic task performance, and professional work. Designed for long-running autonomous tasks with improved consistency.</p>
+          <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" class="source-link">anthropic.com <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Claude Fable 5 & Mythos 5 -->
+      <div class="card">
+        <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Anthropic</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid2)"/>
+              <text x="170" y="55" text-anchor="middle" font-family="Courier New" font-size="10" fill="#00ff41" opacity="0.3">DUAL_MODEL_RELEASE</text>
+              <text x="120" y="95" text-anchor="middle" font-family="Courier New" font-size="16" fill="#00ff41" opacity="0.8" font-weight="bold">FABLE 5</text>
+              <text x="220" y="95" text-anchor="middle" font-family="Courier New" font-size="16" fill="#ff9500" opacity="0.8" font-weight="bold">MYTHOS 5</text>
+              <line x1="170" y1="75" x2="170" y2="110" stroke="#1a2a1a" stroke-width="1"/>
+              <text x="170" y="125" text-anchor="middle" font-family="Courier New" font-size="7" fill="#00cc33" opacity="0.5">JUN 2026 · RESTRICTED ACCESS</text>
+              <text x="170" y="145" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">EXPORT CONTROL SUBJECT</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Anthropic · Jun 9, 2026</div>
+          <h3>Claude Fable 5 & Mythos 5</h3>
+          <p>Dual model release. Fable 5 and Mythos 5 are Anthropic's latest tier models. Subsequently subject to US government export control directive suspending access.</p>
+          <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener" class="source-link">anthropic.com <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Gemini Omni & 3.5 -->
+      <div class="card">
+        <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Google</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid3" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid3)"/>
+              <text x="170" y="55" text-anchor="middle" font-family="Courier New" font-size="10" fill="#00ff41" opacity="0.3">GOOGLE_DEEPMIND</text>
+              <text x="170" y="95" text-anchor="middle" font-family="Courier New" font-size="18" fill="#00ff41" opacity="0.8" font-weight="bold">GEMINI OMNI</text>
+              <text x="170" y="115" text-anchor="middle" font-family="Courier New" font-size="14" fill="#ff9500" opacity="0.7" font-weight="bold">+ GEMINI 3.5</text>
+              <text x="170" y="140" text-anchor="middle" font-family="Courier New" font-size="7" fill="#00cc33" opacity="0.5">MULTIMODAL · 2026</text>
+              <text x="170" y="155" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">TEXT · IMAGE · AUDIO · VIDEO</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Google DeepMind · Jun 2026</div>
+          <h3>Gemini Omni & Gemini 3.5</h3>
+          <p>Google DeepMind's latest models with native multimodal capabilities across text, image, audio, and video. Gemini Omni brings unified perception, while 3.5 pushes reasoning boundaries.</p>
+          <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/" target="_blank" rel="noopener" class="source-link">blog.google <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- DeepSeek V4 -->
+      <div class="card">
+        <a href="https://www.deepseek.com" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag amber">DeepSeek</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid4" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid4)"/>
+              <text x="170" y="55" text-anchor="middle" font-family="Courier New" font-size="10" fill="#ff9500" opacity="0.3">DEEPSEEK_PREVIEW</text>
+              <text x="170" y="95" text-anchor="middle" font-family="Courier New" font-size="22" fill="#ff9500" opacity="0.8" font-weight="bold">V4 PREVIEW</text>
+              <text x="170" y="120" text-anchor="middle" font-family="Courier New" font-size="8" fill="#00ff41" opacity="0.5">WORLD-CLASS REASONING</text>
+              <text x="170" y="138" text-anchor="middle" font-family="Courier New" font-size="7" fill="#00cc33" opacity="0.4">AGENT CAPABILITIES UPGRADED</text>
+              <text x="170" y="155" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">OPEN-SOURCE · MIT LICENSE</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">DeepSeek · Jun 2026</div>
+          <h3>DeepSeek V4 (Preview)</h3>
+          <p>Preview release of DeepSeek V4 with world-top-tier reasoning performance and significantly upgraded agent capabilities. Available on web, app, and API. Continues the open-source tradition.</p>
+          <a href="https://www.deepseek.com" target="_blank" rel="noopener" class="source-link">deepseek.com <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Claude Opus 4.8 (general) -->
+      <div class="card">
+        <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Trend</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid5" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid5)"/>
+              <text x="170" y="50" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">REASONING_MODELS</text>
+              <text x="170" y="80" text-anchor="middle" font-family="Courier New" font-size="14" fill="#00ff41" opacity="0.7" font-weight="bold">EXTENDED THINKING</text>
+              <text x="170" y="105" text-anchor="middle" font-family="Courier New" font-size="10" fill="#00cc33" opacity="0.5">Chain-of-thought</text>
+              <text x="170" y="122" text-anchor="middle" font-family="Courier New" font-size="10" fill="#00cc33" opacity="0.5">Multi-step reasoning</text>
+              <text x="170" y="139" text-anchor="middle" font-family="Courier New" font-size="10" fill="#00cc33" opacity="0.5">Autonomous agents</text>
+              <text x="170" y="160" text-anchor="middle" font-family="Courier New" font-size="7" fill="#ff9500" opacity="0.5">2026 MAINSTREAM</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Industry Trend · 2026</div>
+          <h3>Reasoning Models Go Mainstream</h3>
+          <p>Extended thinking and chain-of-thought reasoning are now standard across all major providers — Anthropic, Google, OpenAI, DeepSeek. Models "think" before responding, enabling complex multi-step problem solving.</p>
+          <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" class="source-link">anthropic.com <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════ APPLICATIONS ═══════════════ -->
+  <section id="applications">
+    <div class="section-header">
+      <span class="prompt">root@ncc-1701:~$</span>
+      <h2>AI Applications</h2>
+      <div class="line"></div>
+    </div>
+    <div class="terminal-line"><span class="prompt">▸</span> Listing notable AI tools and applications — 2026</div>
+
+    <div class="card-grid">
+
+      <!-- Gemini for Science -->
+      <div class="card">
+        <a href="https://blog.google/innovation-and-ai/technology/research/gemini-for-science-io-2026/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Google</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid6" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid6)"/>
+              <text x="170" y="55" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">GOOGLE_RESEARCH</text>
+              <text x="170" y="85" text-anchor="middle" font-family="Courier New" font-size="18" fill="#00ff41" opacity="0.8" font-weight="bold">GEMINI FOR</text>
+              <text x="170" y="108" text-anchor="middle" font-family="Courier New" font-size="18" fill="#00ff41" opacity="0.8" font-weight="bold">SCIENCE</text>
+              <text x="170" y="135" text-anchor="middle" font-family="Courier New" font-size="7" fill="#ff9500" opacity="0.6">IO 2026 · NEW ERA OF DISCOVERY</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Google · Jun 2026</div>
+          <h3>Gemini for Science</h3>
+          <p>A new collection of science tools and experiments built on Gemini to expand the scale and precision of scientific exploration. AI-powered experiments for researchers.</p>
+          <a href="https://blog.google/innovation-and-ai/technology/research/gemini-for-science-io-2026/" target="_blank" rel="noopener" class="source-link">blog.google <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- AMIE Medical AI -->
+      <div class="card">
+        <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Google</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid7" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid7)"/>
+              <text x="170" y="55" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">GOOGLE_RESEARCH · NATURE</text>
+              <text x="170" y="88" text-anchor="middle" font-family="Courier New" font-size="20" fill="#00ff41" opacity="0.8" font-weight="bold">AMIE</text>
+              <text x="170" y="110" text-anchor="middle" font-family="Courier New" font-size="8" fill="#00cc33" opacity="0.5">MEDICAL AI</text>
+              <text x="170" y="130" text-anchor="middle" font-family="Courier New" font-size="7" fill="#ff9500" opacity="0.6">DISEASE MANAGEMENT</text>
+              <text x="170" y="150" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">PUBLISHED IN NATURE</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Google Research · Jun 2026</div>
+          <h3>AMIE — Medical AI</h3>
+          <p>New research published in Nature shows how AMIE, Google's medical AI, could help manage health conditions. A diagnostic and management conversation agent for clinical use.</p>
+          <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/" target="_blank" rel="noopener" class="source-link">blog.google <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Claude Code -->
+      <div class="card">
+        <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Anthropic</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid8" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid8)"/>
+              <text x="170" y="55" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">CLI_CODING_AGENT</text>
+              <text x="170" y="85" text-anchor="middle" font-family="Courier New" font-size="20" fill="#00ff41" opacity="0.8" font-weight="bold">CLAUDE CODE</text>
+              <text x="170" y="110" text-anchor="middle" font-family="Courier New" font-size="8" fill="#00cc33" opacity="0.5">$ claude --help</text>
+              <text x="170" y="125" text-anchor="middle" font-family="Courier New" font-size="7" fill="#00cc33" opacity="0.4">CODEBASE NAVIGATION</text>
+              <text x="170" y="140" text-anchor="middle" font-family="Courier New" font-size="7" fill="#00cc33" opacity="0.4">GIT OPERATIONS · PR REVIEW</text>
+              <text x="170" y="158" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">POWERED BY OPUS 4.8</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Anthropic · 2026</div>
+          <h3>Claude Code</h3>
+          <p>CLI-based AI coding agent that navigates codebases, edits files, runs commands, and manages git operations autonomously. Now powered by Claude Opus 4.8 for extended coding sessions.</p>
+          <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" class="source-link">anthropic.com <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Project Genie -->
+      <div class="card">
+        <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/project-genie-expands/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">DeepMind</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid9" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid9)"/>
+              <text x="170" y="50" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">GOOGLE_DEEPMIND</text>
+              <text x="170" y="80" text-anchor="middle" font-family="Courier New" font-size="18" fill="#00ff41" opacity="0.8" font-weight="bold">PROJECT GENIE</text>
+              <text x="170" y="105" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00cc33" opacity="0.5">+ STREET VIEW</text>
+              <text x="170" y="130" text-anchor="middle" font-family="Courier New" font-size="7" fill="#ff9500" opacity="0.6">SIMULATE REAL-WORLD PLACES</text>
+              <text x="170" y="150" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">INTERACTIVE ENVIRONMENTS</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Google DeepMind · Jun 2026</div>
+          <h3>Project Genie + Street View</h3>
+          <p>DeepMind's Project Genie expands to simulate real-world places using Street View data. Creates interactive, navigable environments from geographic data — a step toward world-model AI.</p>
+          <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/project-genie-expands/" target="_blank" rel="noopener" class="source-link">blog.google <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Running Guide Agent -->
+      <div class="card">
+        <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/running-guide-agent/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">DeepMind</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid10" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid10)"/>
+              <text x="170" y="50" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">DEEPMIND_RESEARCH</text>
+              <text x="170" y="85" text-anchor="middle" font-family="Courier New" font-size="16" fill="#00ff41" opacity="0.8" font-weight="bold">RUNNING GUIDE</text>
+              <text x="170" y="110" text-anchor="middle" font-family="Courier New" font-size="8" fill="#00cc33" opacity="0.5">AUTONOMOUS AGENT</text>
+              <text x="170" y="135" text-anchor="middle" font-family="Courier New" font-size="7" fill="#ff9500" opacity="0.6">RUNNING UNBOUNDED</text>
+              <text x="170" y="155" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">EXTENDED-HORIZON TASKS</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Google DeepMind · Jun 2026</div>
+          <h3>Running Guide Agent</h3>
+          <p>A step towards running unbounded — DeepMind's research into agents that can operate autonomously over extended periods without human intervention. Tackles the "unbounded execution" problem.</p>
+          <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/running-guide-agent/" target="_blank" rel="noopener" class="source-link">blog.google <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- AI Content Identification -->
+      <div class="card">
+        <a href="https://blog.google/innovation-and-ai/products/identifying-ai-generated-media-online/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card-image">
+            <span class="tag">Google</span>
+            <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="180" fill="#000900"/>
+              <defs><pattern id="grid11" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0a1f0a" stroke-width="0.5"/>
+              </pattern></defs>
+              <rect width="340" height="180" fill="url(#grid11)"/>
+              <text x="170" y="50" text-anchor="middle" font-family="Courier New" font-size="9" fill="#00ff41" opacity="0.3">AI_TRANSPARENCY</text>
+              <text x="170" y="82" text-anchor="middle" font-family="Courier New" font-size="14" fill="#00ff41" opacity="0.8" font-weight="bold">CONTENT</text>
+              <text x="170" y="100" text-anchor="middle" font-family="Courier New" font-size="14" fill="#00ff41" opacity="0.8" font-weight="bold">PROVENANCE</text>
+              <text x="170" y="125" text-anchor="middle" font-family="Courier New" font-size="7" fill="#ff9500" opacity="0.6">IDENTIFY AI-GENERATED MEDIA</text>
+              <text x="170" y="145" text-anchor="middle" font-family="Courier New" font-size="6" fill="#555" opacity="0.6">SIGNALS · LABELS · METADATA</text>
+            </svg>
+            <div class="overlay">▸ VIEW SOURCE</div>
+          </div>
+        </a>
+        <div class="card-body">
+          <div class="meta">Google · Jun 2026</div>
+          <h3>AI Content Provenance</h3>
+          <p>Google makes it easier to understand how content was created and edited — new tools for identifying AI-generated media online through provenance signals and metadata labels.</p>
+          <a href="https://blog.google/innovation-and-ai/products/identifying-ai-generated-media-online/" target="_blank" rel="noopener" class="source-link">blog.google <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════ ARTICLES ═══════════════ -->
+  <section id="articles">
+    <div class="section-header">
+      <span class="prompt">root@ncc-1701:~$</span>
+      <h2>Trustworthy Articles</h2>
+      <div class="line"></div>
+    </div>
+    <div class="terminal-line"><span class="prompt">▸</span> Listing verified articles from reputable sources — MIT Tech Review, Google, Anthropic</div>
+
+    <div class="article-list">
+
+      <a href="https://www.technologyreview.com/2026/06/19/1139313/a-startup-claims-it-broke-through-a-bottleneck-thats-holding-back-llms/" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">MIT Technology Review · Jun 19, 2026</div>
+          <h4>A startup claims it broke through a bottleneck that's holding back LLMs</h4>
+          <p>Subquadratic has shared details about its new model architecture. Some remain skeptical, but the approach could address scaling limitations.</p>
+        </div>
+        <div class="source">techreview.com →</div>
+      </a>
+
+      <a href="https://www.technologyreview.com/2026/06/11/1138794/google-deepmind-is-worried-about-what-happens-when-millions-of-agents-start-to-interact/" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">MIT Technology Review · Jun 11, 2026</div>
+          <h4>Google DeepMind is worried about what happens when millions of agents start to interact</h4>
+          <p>The firm is calling for more scientists to study the risks of multi-agent systems and emergent behaviors.</p>
+        </div>
+        <div class="source">techreview.com →</div>
+      </a>
+
+      <a href="https://www.technologyreview.com/2026/06/09/1138582/five-things-you-need-to-know-about-ai/" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">MIT Technology Review · Jun 9, 2026</div>
+          <h4>Five things you need to know about AI</h4>
+          <p>At SXSW London, MIT Tech Review's senior editor laid out how he's thinking about AI in 2026 — covering agents, reasoning, safety, and scale.</p>
+        </div>
+        <div class="source">techreview.com →</div>
+      </a>
+
+      <a href="https://www.technologyreview.com/2026/06/05/1138437/the-meta-hack-shows-theres-more-to-ai-security-than-mythos/" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">MIT Technology Review · Jun 5, 2026</div>
+          <h4>The Meta hack shows there's more to AI security than Mythos</h4>
+          <p>Some AI cybersecurity threats are incredibly simple. They're still dangerous — and not all risks require frontier-level capabilities.</p>
+        </div>
+        <div class="source">techreview.com →</div>
+      </a>
+
+      <a href="https://www.technologyreview.com/2026/05/29/1138107/how-the-popes-magnifica-humanitas-offers-a-template-for-individuals-to-meet-the-ai-moment/" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">MIT Technology Review · May 29, 2026</div>
+          <h4>How the Pope's Magnifica Humanitas offers a template for individuals to meet the AI moment</h4>
+          <p>Despite a lack of regulation, we still have the ability to steer AI in ways that can benefit our common humanity — a thoughtful analysis.</p>
+        </div>
+        <div class="source">techreview.com →</div>
+      </a>
+
+      <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">Anthropic · May 28, 2026</div>
+          <h4>Introducing Claude Opus 4.8</h4>
+          <p>An upgrade to the Opus class of models, with stronger performance across coding, agentic tasks, and professional work, and the consistency to handle long-running work.</p>
+        </div>
+        <div class="source">anthropic.com →</div>
+      </a>
+
+      <a href="https://www.anthropic.com/policy-on-the-ai-exponential" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">Anthropic · Jun 10, 2026</div>
+          <h4>Policy on the AI Exponential</h4>
+          <p>AI is advancing at exponential speed, and the policymaking process was built for a slower world. Anthropic shares policy proposals to prepare institutions for AI progress.</p>
+        </div>
+        <div class="source">anthropic.com →</div>
+      </a>
+
+      <a href="https://blog.google/innovation-and-ai/technology/research/gemini-for-science-io-2026/" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">Google Research · Jun 2026</div>
+          <h4>Gemini for Science: AI experiments and tools for a new era of discovery</h4>
+          <p>A new collection of science tools and experiments to expand the scale and precision of scientific exploration, powered by Gemini.</p>
+        </div>
+        <div class="source">blog.google →</div>
+      </a>
+
+      <a href="https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">Anthropic · Jun 3, 2026</div>
+          <h4>What we learned mapping a year's worth of AI-enabled cyber threats</h4>
+          <p>Anthropic's analysis of AI-enabled cyber threats mapped to the MITRE ATT&CK framework — a year of observations and lessons learned.</p>
+        </div>
+        <div class="source">anthropic.com →</div>
+      </a>
+
+      <a href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener" class="article-item">
+        <div class="icon">▸</div>
+        <div class="content">
+          <div class="meta">arXiv · Continuous</div>
+          <h4>arXiv cs.AI — Latest AI Research Papers</h4>
+          <p>The latest academic submissions in Artificial Intelligence, updated daily. Over 1,100 recent papers covering agents, reasoning, MoE, TTS, and more.</p>
+        </div>
+        <div class="source">arxiv.org →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════ SOURCES ═══════════════ -->
+  <section id="sources">
+    <div class="section-header">
+      <span class="prompt">root@ncc-1701:~$</span>
+      <h2>Verified Sources</h2>
+      <div class="line"></div>
+    </div>
+    <div class="terminal-line"><span class="prompt">▸</span> All links on this site point to trustworthy, primary sources</div>
+
+    <div class="card-grid">
+      <div class="card" style="cursor:default;">
+        <div class="card-body" style="padding: 1.5rem;">
+          <div class="meta">PRIMARY SOURCES</div>
+          <h3 style="margin-bottom: 1rem;">Trusted Origins</h3>
+          <p style="margin-bottom: 0.5rem;">▸ <a href="https://www.anthropic.com/news" target="_blank" rel="noopener" style="color:var(--phosphor);text-decoration:none;">anthropic.com/news</a> — Official Anthropic announcements</p>
+          <p style="margin-bottom: 0.5rem;">▸ <a href="https://blog.google/technology/google-deepmind/" target="_blank" rel="noopener" style="color:var(--phosphor);text-decoration:none;">blog.google — Google DeepMind</a> — Google AI research blog</p>
+          <p style="margin-bottom: 0.5rem;">▸ <a href="https://www.technologyreview.com/topic/artificial-intelligence/" target="_blank" rel="noopener" style="color:var(--phosphor);text-decoration:none;">MIT Technology Review — AI</a> — Independent tech journalism</p>
+          <p style="margin-bottom: 0.5rem;">▸ <a href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener" style="color:var(--phosphor);text-decoration:none;">arxiv.org — cs.AI</a> — Peer-reviewed preprints</p>
+          <p style="margin-bottom: 0.5rem;">▸ <a href="https://www.deepseek.com" target="_blank" rel="noopener" style="color:var(--phosphor);text-decoration:none;">deepseek.com</a> — DeepSeek official</p>
+          <p style="margin-bottom: 0;">▸ <a href="https://openai.com/news/" target="_blank" rel="noopener" style="color:var(--phosphor);text-decoration:none;">openai.com/news</a> — OpenAI announcements</p>
+        </div>
+      </div>
+
+      <div class="card" style="cursor:default;">
+        <div class="card-body" style="padding: 1.5rem;">
+          <div class="meta">EDITORIAL POLICY</div>
+          <h3 style="margin-bottom: 1rem;">How We Curate</h3>
+          <p style="margin-bottom: 0.5rem;">▸ Only primary sources — official company blogs, reputable journals, and established research outlets</p>
+          <p style="margin-bottom: 0.5rem;">▸ No anonymous blogs, no unverified leaks, no social media rumors</p>
+          <p style="margin-bottom: 0.5rem;">▸ Click any splash image or article title to open the original source in a new tab</p>
+          <p style="margin-bottom: 0;">▸ Updated regularly as new models and research are published</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <p>CODE EXECUTION · <a href="https://github.com/arecibo-sys/code-execution">github.com/arecibo-sys/code-execution</a></p>
+  <p style="margin-top:0.5rem;opacity:0.5;">Built with phosphor and purpose · Sources verified as of June 2026</p>
+</footer>
+
+<!-- ═══════════════ BOOT SEQUENCE SCRIPT ═══════════════ -->
+<script>
+(function() {
+  const bootLines = [
+    "NUC-MOTHER-1B BOOT SEQUENCE INITIATED...",
+    "CHECKING BIOS VERSION... 2.1.7-NCC",
+    "MEMORY TEST: 65536K OK",
+    "LOADING AI MODEL REGISTRY...",
+    "ESTABLISHING UPLINK TO NCC-1701...",
+    "SCANLINE ACTIVE · PHOSPHOR NOMINAL",
+    "READY."
+  ];
+
+  const container = document.getElementById('boot-sequence');
+  const enterBtn = document.getElementById('enterBtn');
+  let delay = 0;
+
+  bootLines.forEach((line, i) => {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'boot-line';
+      el.textContent = '▸ ' + line;
+      container.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('shown'));
+    }, delay);
+    delay += 280 + Math.random() * 200;
+  });
+
+  setTimeout(() => {
+    enterBtn.classList.add('shown');
+  }, delay + 400);
+})();
+</script>
+
+</body>
+</html>
