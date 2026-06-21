@@ -1,0 +1,35 @@
+name: Daily Update
+
+on:
+  schedule:
+    # Runs at 06:00 UTC every day
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update lastUpdated date
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          # Update the date in data.js
+          sed -i "s/lastUpdated: \".*\"/lastUpdated: \"$TODAY\"/" data.js
+          echo "Updated data.js lastUpdated to $TODAY"
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --quiet || {
+            git add data.js
+            git commit -m "chore: daily update — $(date -u +%Y-%m-%d)"
+            git push
+          } || echo "No changes to commit"
