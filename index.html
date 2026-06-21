@@ -693,25 +693,59 @@ footer a:hover {
       osc.stop(now + 0.03);
     },
 
-    // Soft terminal beep
-    beep() {
+    // Rapid typing burst — sounds like code being written
+    typingBurst() {
       if (!this.enabled || !this.ctx) return;
       const now = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
+      // 3-6 rapid key clicks in quick succession
+      const count = 3 + Math.floor(Math.random() * 4);
+      for (let i = 0; i < count; i++) {
+        const t = now + i * (0.04 + Math.random() * 0.03);
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
 
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, now);
-      osc.frequency.exponentialRampToValueAtTime(660, now + 0.08);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(150 + Math.random() * 200, t);
+        osc.frequency.exponentialRampToValueAtTime(50, t + 0.012);
 
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.04, now + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        filter.type = 'lowpass';
+        filter.frequency.value = 700 + Math.random() * 500;
 
-      osc.connect(gain);
-      gain.connect(this.masterGain);
-      osc.start(now);
-      osc.stop(now + 0.13);
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.06, t + 0.001);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.02);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(t);
+        osc.stop(t + 0.025);
+      }
+      // occasional space-bar thud at the end
+      if (Math.random() < 0.4) {
+        const t = now + count * 0.045;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(80, t);
+        osc.frequency.exponentialRampToValueAtTime(40, t + 0.04);
+
+        filter.type = 'lowpass';
+        filter.frequency.value = 300;
+
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.05, t + 0.002);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(t);
+        osc.stop(t + 0.07);
+      }
     },
 
     // Low hum for ambient atmosphere
@@ -765,9 +799,9 @@ footer a:hover {
             setTimeout(() => this.keyClick(), 60 + Math.random() * 40);
           }
         }
-        // 15% chance: beep
-        if (Math.random() < 0.15) {
-          this.beep();
+        // 20% chance: rapid typing burst
+        if (Math.random() < 0.20) {
+          this.typingBurst();
         }
         // 8% chance: low hum
         if (Math.random() < 0.08) {
@@ -963,7 +997,7 @@ footer a:hover {
 
     setTimeout(() => {
       enterBtn.classList.add('shown');
-      SoundEngine.beep();
+      SoundEngine.typingBurst();
     }, delay + 400);
 
     // Stop cursor blinking 3 seconds after boot completes
@@ -980,7 +1014,7 @@ footer a:hover {
     this.textContent = 'SOUND: ' + (on ? 'ON' : 'OFF');
     this.classList.toggle('on', on);
     if (on) {
-      SoundEngine.beep();
+      SoundEngine.typingBurst();
     }
   });
 
