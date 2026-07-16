@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 const SITE_DATA = {
-  lastUpdated: "2026-07-15",
+  lastUpdated: "2026-07-16",
   models: [
     {
       tag: "Anthropic",
